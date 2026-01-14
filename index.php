@@ -1,3 +1,11 @@
+<?php
+  require 'StudentManager.php';
+
+  $studentManager = new StudentManager();
+  $students = $studentManager->getAllStudents();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-gray-50">
   <head>
@@ -114,6 +122,45 @@
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
+                  <?php foreach ($students as $student): ?>
+                    <tr>
+                      <td
+                        class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
+                      >
+                        <?= $student['name'] ?? '?' ?>
+                      </td>
+                      <td
+                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                      >
+                        <?= $student['email'] ?? '?' ?>
+                      </td>
+                      <td
+                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                      >
+                        <?= $student['phone'] ?? '?' ?>
+                      </td>
+                      <td
+                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                      >
+                        <span
+                          class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
+                          ><?= $student['status'] ?? '?' ?></span
+                        >
+                      </td>
+                      <td
+                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
+                      >
+                        <a
+                          href="#"
+                          class="text-indigo-600 hover:text-indigo-900 mr-4"
+                          >Edit</a
+                        >
+                        <a href="#" class="text-red-600 hover:text-red-900"
+                          >Delete</a
+                        >
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>  
                   <tr>
                     <td
                       class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"

@@ -1,6 +1,11 @@
 <?php
 
 class StudentManager {
+
+    public function getAllStudents(): array
+    {
+        return json_decode(file_get_contents('students.json'), true) ?? [];
+    }
     
     public function create(array $data): array
     {
