@@ -1,3 +1,13 @@
+<?php
+  require 'StudentManager.php';
+
+  if($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $studentManager = new StudentManager();
+      $result = $studentManager->create($_POST);
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en" class="h-full ">
   <head>
@@ -64,6 +74,7 @@
         <div class="mx-auto max-w-3xl px-4 pb-12 sm:px-6 lg:px-8">
           <form
             class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
+            method="POST"
           >
             <div class="px-4 py-6 sm:p-8">
               <div class="mb-8">
@@ -156,7 +167,7 @@
               class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8 bg-gray-50 rounded-b-xl"
             >
               <a
-                href="index.html"
+                href="index.php"
                 class="text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700"
                 >Cancel</a
               >
