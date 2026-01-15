@@ -7,10 +7,6 @@ https://drive.google.com/file/d/1Jhlt09DKBrBsTLYHXxCm_CM650fDV5Yy/view
 ===
 
 Assignment -01 [ Student Management Project]
-Task . 100 marks (Pass Marks: 40)
-
-Assignment -01 [ Student Management Project]
-
 Task: 100 marks (Pass Marks: 40)
 
 
@@ -19,13 +15,9 @@ Task: 100 marks (Pass Marks: 40)
 Each student object in your students.json file should follow this structure:
 
 id: Unique Identifier (Integer or String)
-
 name: Full Name
-
 email: Valid Email Address
-
 phone: Contact Number
-
 status: Enrollment Status (e.g., "Active", “On Leave”, "Graduated", "Inactive")
 
 
@@ -36,24 +28,17 @@ Create a class named StudentManager. It should encapsulate all the logic for int
 Methods to Implement:
 
 public function getAllStudents(): Returns an array of all student objects.
-
 public function getStudentById($id): Finds and returns a single student.
-
 public function create($data): Appends a new student to the file.
-
 public function update($id, $data): Finds the student by ID and updates their details.
-
 public function delete($id): Removes the student from the array and saves the file
-
 
 
 3. Implementation Requirements
 The Interface (UI)
 
 List View (index.php): A clean HTML table showing all students. Add "Edit" and "Delete" buttons in an "Actions" column.
-
 Create Form: A simple form with inputs for Name, Email, Phone, and a <select> dropdown for Enrollment Status.
-
 Edit Page: A pre-populated form that loads the existing student data based on the id passed in the URL (e.g., edit.php?id=123).
 
 
@@ -67,31 +52,23 @@ Data Validation: Ensure the email is in a valid format using filter_var(). Preve
 
 নির্দেশনাঃ
 ১। ভালো করে অ্যাসাইনমেন্টের নির্দেশনা গুলো পড়ুন।
-
 ২। এই এসাইনমেন্টে আপনাকে UI প্রদান করা হবে।
-
 ৩। UI এর Resource URL: Resource Link
 ৪। এরপরেও যদি অ্যাসাইনমেন্ট সম্পর্কিত কোন প্রশ্ন থাকে তাহলে অবশ্যই সাপোর্টে এসে কথা বলবেন
-
 ৫। অ্যাসাইনমেন্টের মার্কস ১০০ (পাস মার্কস ৪০)
-
 ৬। এসাইনমেন্ট জমা দেওয়ার শেষ তারিখ (18 January 2026) রাত 11.59 মিনিট পর্যন্ত ।)
-
 ৭। এসাইনমেন্ট জমা দেওয়ার শেষ তারিখ অতিক্রম হবার পর জমা দিলে ৫০% মার্কস কর্তন হবে
-
 ৮। অ্যাসাইনমেন্ট এর সমস্ত সোর্স কোড গিটহাব এ আপলোড করতে হবে এবং readme.md file এ নিচের তথ্যগুলো প্রদান করতে হবে
 
-প্রজেক্ট এর root ডিরেক্টরীতে একটি readme.md file তৈরি করুন
+    প্রজেক্ট এর root ডিরেক্টরীতে একটি readme.md file তৈরি করুন
 
-তারপর রেডমি ফাইলে নিচের দেওয়া তথ্য গুলো লিখুন
+    তারপর রেডমি ফাইলে নিচের দেওয়া তথ্য গুলো লিখুন
 
-# Assignment : কত নাম্বার এসাইনমেন্ট তা লিখুন
+    # Assignment : কত নাম্বার এসাইনমেন্ট তা লিখুন
+    ### Name : আপনার নাম লিখুন
+    ### Email: (আপনার জিমেইল এড্রেস লিখুন যে যে জিমেইল দিয়ে আপনি কোর্স purchase করেছেন)
 
-### Name : আপনার নাম লিখুন
-
-### Email: (আপনার জিমেইল এড্রেস লিখুন যে যে জিমেইল দিয়ে আপনি কোর্স purchase করেছেন)
-
-পুন:রায় গিটহাব এ readme ফাইল সহ কোড গুলো পুশ করুন
+    পুন:রায় গিটহাব এ readme ফাইল সহ কোড গুলো পুশ করুন
 
 ৯। এসাইনমেন্টের গিটহাব রিপোজিটরিটির লিংক কপি করুন এবং সেটি ওয়েবসাইটে জমা দিন ( গিটহাব রিপোজিটরিটি অবশ্যই পাবলিক থাকতে হবে)
 

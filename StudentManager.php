@@ -27,4 +27,37 @@ class StudentManager {
             'message' => 'Failed to create student.',
         ];
     }
+
+    public function getStudentById($id): ?array
+    {
+        $students = $this->getAllStudents();
+        foreach ($students as $student) {
+            if ($student['id'] == $id) return $student;
+        }
+
+        return null;
+    }
+
+    public function update($id, $data): array
+    {
+        $students = $this->getAllStudents();
+
+        foreach ($students as $i => $student) { 
+            if ($student['id'] == $id) {
+                $students[$i] = array_merge($student, $data);
+                
+                if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
+                    return [
+                        'success' => true,
+                        'message' => 'Student updated successfully.',
+                    ];
+                }
+            }
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Failed to update student.',
+        ];
+    }
 }
