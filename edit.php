@@ -165,10 +165,19 @@
                       name="status"
                       class="block w-full rounded-md border-0 p-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:max-w-xs sm:text-sm sm:leading-6 outline-none focus:ring-1 focus:ring-indigo-600"
                     >
+                      <?php
+                        $statusList = ['Active', 'On Leave', 'Graduated', 'Inactive'];
+                        foreach($statusList as $status) {
+                            $selected = ($student['status'] ?? '') === $status ? 'selected' : '';
+                            echo "<option value=\"$status\" {$selected}>{$status}</option>";
+                        }
+                      ?>
+                      <!--
                       <option>Active</option>
                       <option>On Leave</option>
                       <option>Graduated</option>
                       <option>Inactive</option>
+                      -->
                     </select>
                   </div>
                 </div>

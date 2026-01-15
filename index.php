@@ -155,9 +155,22 @@
                           class="text-indigo-600 hover:text-indigo-900 mr-4"
                           >Edit</a
                         >
+                        <form
+                          action="delete.php"
+                          method="POST"
+                          onsubmit="return confirm('Are you sure you want to delete \'<?= $student['name'] ?? '?' ?>\'?');"
+                          class="inline"
+                      >
+                          <input type="hidden" name="id" value="<?= $student['id'] ?>">
+                          <button type="submit" class="text-red-600 hover:text-red-900">
+                              Delete
+                          </button>
+                        </form>
+                        <!--
                         <a href="#" class="text-red-600 hover:text-red-900"
                           >Delete</a
                         >
+                        -->
                       </td>
                     </tr>
                   <?php endforeach; ?>  

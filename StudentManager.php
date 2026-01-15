@@ -60,4 +60,26 @@ class StudentManager {
             'message' => 'Failed to update student.',
         ];
     }
+
+    public function delete($id): array
+    {
+        $students = $this->getAllStudents();
+        foreach ($students as $i => $student) {
+            if ($student['id'] == $id) {
+                array_splice($students, $i, 1);
+
+                if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
+                    return [
+                        'success' => true,
+                        'message' => 'Student deleted successfully.',
+                    ];
+                }
+            }
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Failed to delete student.',
+        ];
+    }
 }
