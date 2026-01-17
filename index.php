@@ -107,181 +107,186 @@
             </div>
 
             <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-300">
-                <thead>
-                  <tr>
-                    <th
-                      scope="col"
-                      class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Email
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Phone
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Status
-                    </th>
-                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
-                      <span class="sr-only">Actions</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                  <?php foreach ($students as $student): ?>
+              <?php if (empty($students)): ?>
+                <hr><br>
+                <p class="text-gray-500 text-center italic">No students found.</p>
+              <?php else: ?>
+                <table class="min-w-full divide-y divide-gray-300">
+                  <thead>
+                    <tr>
+                      <th
+                        scope="col"
+                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                      >
+                        Name
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Email
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Phone
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Status
+                      </th>
+                      <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+                        <span class="sr-only">Actions</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-200">
+                    <?php foreach ($students as $student): ?>
+                      <tr>
+                        <td
+                          class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
+                        >
+                          <?= e($student['name'] ?? '?') ?>
+                        </td>
+                        <td
+                          class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                        >
+                          <?= e($student['email'] ?? '?') ?>
+                        </td>
+                        <td
+                          class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                        >
+                          <?= e($student['phone'] ?? '?') ?>
+                        </td>
+                        <td
+                          class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                        >
+                          <?php
+                            $status = $student['status'] ?? 'Unknown';
+                            $statusClasses = [
+                                'Active' => 'bg-green-50 text-green-700 ring-green-600/20',
+                                'On Leave' => 'bg-yellow-50 text-yellow-800 ring-yellow-600/20',
+                                'Graduated' => 'bg-blue-50 text-blue-700 ring-blue-600/20',
+                                'Inactive' => 'bg-gray-50 text-gray-700 ring-gray-600/20',
+
+                                'Unknown' => 'bg-black-50 text-black-700 ring-black-600/20',
+                            ];
+                            $currentClass = $statusClasses[$status];
+                          ?>  
+                          <span
+                            class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <?= $currentClass ?>"
+                            ><?= e($status) ?></span
+                          >
+                        </td>
+                        <td
+                          class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
+                        >
+                          <a
+                            href="edit.php?id=<?= $student['id'] ?>"
+                            class="text-indigo-600 hover:text-indigo-900 mr-4"
+                            >Edit</a
+                          >
+                          <form
+                            action="delete.php"
+                            method="POST"
+                            onsubmit="return confirm('Are you sure you want to delete \'<?= $student['name'] ?? '?' ?>\'?');"
+                            class="inline"
+                        >
+                            <input type="hidden" name="id" value="<?= $student['id'] ?>">
+                            <button type="submit" class="text-red-600 hover:text-red-900">
+                                Delete
+                            </button>
+                          </form>
+                          <!--
+                          <a href="#" class="text-red-600 hover:text-red-900"
+                            >Delete</a
+                          >
+                          -->
+                        </td>
+                      </tr>
+                    <?php endforeach; ?>  
+                    <!--
                     <tr>
                       <td
                         class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
                       >
-                        <?= e($student['name'] ?? '?') ?>
+                        John Doe
                       </td>
                       <td
                         class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                       >
-                        <?= e($student['email'] ?? '?') ?>
+                        john.doe@example.com
                       </td>
                       <td
                         class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                       >
-                        <?= e($student['phone'] ?? '?') ?>
+                        +880 1712-123456
                       </td>
                       <td
                         class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                       >
-                        <?php
-                          $status = $student['status'] ?? 'Unknown';
-                          $statusClasses = [
-                              'Active' => 'bg-green-50 text-green-700 ring-green-600/20',
-                              'On Leave' => 'bg-yellow-50 text-yellow-800 ring-yellow-600/20',
-                              'Graduated' => 'bg-blue-50 text-blue-700 ring-blue-600/20',
-                              'Inactive' => 'bg-gray-50 text-gray-700 ring-gray-600/20',
-
-                              'Unknown' => 'bg-black-50 text-black-700 ring-black-600/20',
-                          ];
-                          $currentClass = $statusClasses[$status];
-                        ?>  
                         <span
-                          class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <?= $currentClass ?>"
-                          ><?= e($status) ?></span
+                          class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
+                          >Active</span
                         >
                       </td>
                       <td
                         class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
                       >
                         <a
-                          href="edit.php?id=<?= $student['id'] ?>"
+                          href="#"
                           class="text-indigo-600 hover:text-indigo-900 mr-4"
                           >Edit</a
                         >
-                        <form
-                          action="delete.php"
-                          method="POST"
-                          onsubmit="return confirm('Are you sure you want to delete \'<?= $student['name'] ?? '?' ?>\'?');"
-                          class="inline"
-                      >
-                          <input type="hidden" name="id" value="<?= $student['id'] ?>">
-                          <button type="submit" class="text-red-600 hover:text-red-900">
-                              Delete
-                          </button>
-                        </form>
-                        <!--
                         <a href="#" class="text-red-600 hover:text-red-900"
                           >Delete</a
                         >
-                        -->
                       </td>
                     </tr>
-                  <?php endforeach; ?>  
-                  <!--
-                  <tr>
-                    <td
-                      class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
-                    >
-                      John Doe
-                    </td>
-                    <td
-                      class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                    >
-                      john.doe@example.com
-                    </td>
-                    <td
-                      class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                    >
-                      +880 1712-123456
-                    </td>
-                    <td
-                      class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                    >
-                      <span
-                        class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
-                        >Active</span
+                    <tr>
+                      <td
+                        class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
                       >
-                    </td>
-                    <td
-                      class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
-                    >
-                      <a
-                        href="#"
-                        class="text-indigo-600 hover:text-indigo-900 mr-4"
-                        >Edit</a
+                        Jane Smith
+                      </td>
+                      <td
+                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                       >
-                      <a href="#" class="text-red-600 hover:text-red-900"
-                        >Delete</a
+                        jane.smith@example.com
+                      </td>
+                      <td
+                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                       >
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
-                    >
-                      Jane Smith
-                    </td>
-                    <td
-                      class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                    >
-                      jane.smith@example.com
-                    </td>
-                    <td
-                      class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                    >
-                      +880 1912-123456
-                    </td>
-                    <td
-                      class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                    >
-                      <span
-                        class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20"
-                        >On Leave</span
+                        +880 1912-123456
+                      </td>
+                      <td
+                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                       >
-                    </td>
-                    <td
-                      class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
-                    >
-                      <a
-                        href="#"
-                        class="text-indigo-600 hover:text-indigo-900 mr-4"
-                        >Edit</a
+                        <span
+                          class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20"
+                          >On Leave</span
+                        >
+                      </td>
+                      <td
+                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
                       >
-                      <a href="#" class="text-red-600 hover:text-red-900"
-                        >Delete</a
-                      >
-                    </td>
-                  </tr>
-                  -->
-                </tbody>
-              </table>
+                        <a
+                          href="#"
+                          class="text-indigo-600 hover:text-indigo-900 mr-4"
+                          >Edit</a
+                        >
+                        <a href="#" class="text-red-600 hover:text-red-900"
+                          >Delete</a
+                        >
+                      </td>
+                    </tr>
+                    -->
+                  </tbody>
+                </table>
+              <?php endif; ?>
             </div>
           </div>
         </div>
