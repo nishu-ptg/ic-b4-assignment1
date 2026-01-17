@@ -2,12 +2,19 @@
 
 class StudentManager {
 
+    private string $filePath;
+
+    public function __construct(string $filePath = 'students.json') {
+        $this->filePath = $filePath;
+    }
+
     /**
      * @return array
      */
     public function getAllStudents(): array
     {
-        return json_decode(file_get_contents('students.json'), true) ?? [];
+        return $this->readFile();
+        // return json_decode(file_get_contents('students.json'), true) ?? [];
     }
     
     /**
@@ -16,14 +23,15 @@ class StudentManager {
      */
     public function create(array $data): array
     {
+        $students = $this->getAllStudents();
         // validate the data first
-        $validation = $this->validate($data);
+        $validation = $this->validate($data, false, $students);
         if (!$validation['success']) {
             return $validation; // if validation fails, no need to proceed
         }
 
         // get all existing students list as array
-        $students = json_decode(file_get_contents('students.json'), true) ?? [];
+        // $students = json_decode(file_get_contents('students.json'), true) ?? [];
 
         // prepare new student data with id and added it to the array
         // $students[] = array_merge($data, [
@@ -41,7 +49,8 @@ class StudentManager {
         ];
 
         // try to save back to the file, pretty print will take more space but easier to read
-        if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
+        // if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
+        if($this->writeFile($students)) {
             return [
                 'success' => true,
                 'message' => "Student '{$data['name']}' created successfully.",
@@ -101,7 +110,8 @@ class StudentManager {
                 ];
                 
                 // try to save
-                if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
+                // if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
+                if ($this->writeFile($students)) {
                     return [
                         'success' => true,
                         'message' => "Student '{$data['name']}' updated successfully.",
@@ -113,7 +123,7 @@ class StudentManager {
         // something went wrong
         return [
             'success' => false,
-            'message' => 'Failed to update student.',
+            'message' => "Student with ID '{$id}' not found.",
         ];
     }
 
@@ -132,27 +142,60 @@ class StudentManager {
                 array_splice($students, $i, 1);
 
                 // try to save
-                if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
+                // if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
+                if ($this->writeFile($students)) {
                     return [
                         'success' => true,
                         'message' => "Student '{$name}' deleted successfully.",
                     ];
                 }
+                
+                return [
+                    'success' => false,
+                    'message' => "Failed to delete student.",
+                ];
             }
         }
 
-        // something went wrong
+        // invaid id
         return [
             'success' => false,
-            'message' => 'Failed to delete student.',
+            'message' => "Student with ID '{$id}' not found.",
         ];
+    }
+
+    /**
+     * @return array
+     */
+    private function readFile(): array 
+    {
+        if (!file_exists($this->filePath)) {
+            return [];
+        }
+
+        $content = file_get_contents($this->filePath);
+        
+        return json_decode($content, true) ?? [];
+    }
+
+    /**
+     * 
+     * @param array $data
+     * @return bool
+     */
+    private function writeFile(array $data): bool 
+    {
+        $json = json_encode(array_values($data), JSON_PRETTY_PRINT);
+        $write = file_put_contents($this->filePath, $json);
+
+        return (bool) $write;
     }
 
     /**
      * @param array $data
      * @return array ['success' => bool, 'message' => string (optional, if any)]
      */
-    private function validate(array $data,bool $isUpdate = false): array
+    private function validate(array $data,bool $isUpdate = false, array $existingStudents = []): array
     {
         // required fields
         $required = ['name', 'email', 'phone', 'status'];
@@ -184,7 +227,8 @@ class StudentManager {
 
         // optional: unique when create
         if (!$isUpdate) {
-            $students = $this->getAllStudents();
+            // $students = $this->getAllStudents();
+            $students = $existingStudents ?: $this->getAllStudents();
             // unique fields, not sure if name and phone should be unique too
             // so just email for now, array structure ensures easy to add/remove fields
             $uniqueFields = ['email',];
