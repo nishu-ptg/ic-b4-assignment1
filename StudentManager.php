@@ -34,10 +34,10 @@ class StudentManager {
         // explicit mapping with desired order
         $students[] = [
             'id'     => $this->generateId($students),
-            'name'   => trim($data['name']),
-            'email'  => trim($data['email']),
-            'phone'  => trim($data['phone']),
-            'status' => trim($data['status']),
+            'name'   => $data['name'],
+            'email'  => $data['email'],
+            'phone'  => $data['phone'],
+            'status' => $data['status'],
         ];
 
         if($this->writeFile($students)) {
@@ -79,7 +79,7 @@ class StudentManager {
     public function update($id, $data): array
     {
         $data = array_map('trim', $data);
-        
+
         // validate the data first
         $validation = $this->validate($data, true);
         if (!$validation['success']) {
@@ -93,10 +93,10 @@ class StudentManager {
             if ($student['id'] == $id) {    // id matched
                 $students[$i] = [
                     'id'     => $student['id'], // keep the same id
-                    'name'   => trim($data['name']),
-                    'email'  => trim($data['email']),
-                    'phone'  => trim($data['phone']),
-                    'status' => trim($data['status']),
+                    'name'   => $data['name'],
+                    'email'  => $data['email'],
+                    'phone'  => $data['phone'],
+                    'status' => $data['status'],
                 ];
                 
                 if ($this->writeFile($students)) {
