@@ -22,6 +22,8 @@ class StudentManager {
      */
     public function create(array $data): array
     {
+        $data = array_map('trim', $data);
+
         $students = $this->getAllStudents();
         // validate the data first
         $validation = $this->validate($data, false, $students);
@@ -76,6 +78,8 @@ class StudentManager {
      */
     public function update($id, $data): array
     {
+        $data = array_map('trim', $data);
+        
         // validate the data first
         $validation = $this->validate($data, true);
         if (!$validation['success']) {

@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "name": "Jane Smith",
+        "email": "jane.smith@example.com",
+        "phone": "+880 1912-123456",
+        "status": "On Leave"
+    },
+    {
+        "id": 2,
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "phone": "+880 1712-123456",
+        "status": "Active"
+    }
+]

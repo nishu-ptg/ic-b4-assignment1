@@ -1,6 +1,8 @@
 <?php
   session_start();
+
   require 'StudentManager.php';
+  require 'helpers.php';
 
   $result = null;
 
@@ -95,7 +97,7 @@
             $messageClass = $result['success'] ? 'bg-green-500' : 'bg-red-500';
           ?>
           <div class="mb-4 p-4 rounded text-white <?= $messageClass ?>">
-            <?= $result['message'] ?>
+            <?= e($result['message']) ?>
           </div>
         <?php endif; ?>
 
@@ -125,7 +127,7 @@
                       type="text"
                       name="name"
                       id="name"
-                      value="<?= $data['name'] ?>"
+                      value="<?= e($data['name'] ?? '') ?>"
                       autocomplete="name"
                       placeholder="John Doe"
                       class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none focus:ring-1 focus:ring-indigo-600"
@@ -144,7 +146,7 @@
                       name="email"
                       type="email"
                       id="email"
-                      value="<?= $data['email'] ?>"
+                      value="<?= e($data['email'] ?? '') ?>"
                       autocomplete="email"
                       placeholder="john@example.com"
                       class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none focus:ring-1 focus:ring-indigo-600"
@@ -163,7 +165,7 @@
                       type="tel"
                       name="phone"
                       id="phone"
-                      value="<?= $data['phone'] ?>"
+                      value="<?= e($data['phone'] ?? '') ?>"
                       autocomplete="tel"
                       placeholder="+1 (555) 123-4567"
                       class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none focus:ring-1 focus:ring-indigo-600"

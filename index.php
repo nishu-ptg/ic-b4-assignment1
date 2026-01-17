@@ -2,6 +2,7 @@
   session_start();
 
   require 'StudentManager.php';
+  require 'helpers.php';
 
   $studentManager = new StudentManager();
   $students = $studentManager->getAllStudents();
@@ -82,7 +83,7 @@
                 $messageClass = $result['success'] ? 'bg-green-500' : 'bg-red-500';
               ?>
               <div class="mb-4 p-4 rounded text-white <?= $messageClass ?>">
-                <?= $result['message'] ?>
+                <?= e($result['message']) ?>
               </div>
               <br>
             <?php endif; ?>
@@ -144,17 +145,17 @@
                       <td
                         class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
                       >
-                        <?= $student['name'] ?? '?' ?>
+                        <?= e($student['name'] ?? '?') ?>
                       </td>
                       <td
                         class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                       >
-                        <?= $student['email'] ?? '?' ?>
+                        <?= e($student['email'] ?? '?') ?>
                       </td>
                       <td
                         class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                       >
-                        <?= $student['phone'] ?? '?' ?>
+                        <?= e($student['phone'] ?? '?') ?>
                       </td>
                       <td
                         class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
@@ -173,7 +174,7 @@
                         ?>  
                         <span
                           class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <?= $currentClass ?>"
-                          ><?= $status ?></span
+                          ><?= e($status) ?></span
                         >
                       </td>
                       <td
@@ -203,6 +204,7 @@
                       </td>
                     </tr>
                   <?php endforeach; ?>  
+                  <!--
                   <tr>
                     <td
                       class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
@@ -277,6 +279,7 @@
                       >
                     </td>
                   </tr>
+                  -->
                 </tbody>
               </table>
             </div>
