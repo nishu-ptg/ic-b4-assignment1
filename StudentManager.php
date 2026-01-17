@@ -55,7 +55,7 @@ class StudentManager {
     }
 
     /**
-     * @param mixed $id
+     * @param string $id
      * @return array|null
      */
     public function getStudentById($id): ?array
@@ -72,8 +72,8 @@ class StudentManager {
     }
 
     /**
-     * @param mixed $id
-     * @param mixed $data
+     * @param string $id
+     * @param array $data
      * @return array ['success' => bool, 'message' => string]
      */
     public function update($id, $data): array
