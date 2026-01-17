@@ -14,7 +14,6 @@ class StudentManager {
     public function getAllStudents(): array
     {
         return $this->readFile();
-        // return json_decode(file_get_contents('students.json'), true) ?? [];
     }
     
     /**
@@ -30,15 +29,6 @@ class StudentManager {
             return $validation; // if validation fails, no need to proceed
         }
 
-        // get all existing students list as array
-        // $students = json_decode(file_get_contents('students.json'), true) ?? [];
-
-        // prepare new student data with id and added it to the array
-        // $students[] = array_merge($data, [
-        //     // 'id' => time(),
-        //     'id' => $this->generateId($students),
-        // ]);
-
         // explicit mapping with desired order
         $students[] = [
             'id'     => $this->generateId($students),
@@ -48,8 +38,6 @@ class StudentManager {
             'status' => trim($data['status']),
         ];
 
-        // try to save back to the file, pretty print will take more space but easier to read
-        // if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
         if($this->writeFile($students)) {
             return [
                 'success' => true,
@@ -99,8 +87,6 @@ class StudentManager {
 
         foreach ($students as $i => $student) { 
             if ($student['id'] == $id) {    // id matched
-                // merge it
-                // $students[$i] = array_merge($student, $data);
                 $students[$i] = [
                     'id'     => $student['id'], // keep the same id
                     'name'   => trim($data['name']),
@@ -109,8 +95,6 @@ class StudentManager {
                     'status' => trim($data['status']),
                 ];
                 
-                // try to save
-                // if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
                 if ($this->writeFile($students)) {
                     return [
                         'success' => true,
@@ -120,7 +104,6 @@ class StudentManager {
             }
         }
 
-        // something went wrong
         return [
             'success' => false,
             'message' => "Student with ID '{$id}' not found.",
@@ -128,7 +111,7 @@ class StudentManager {
     }
 
     /**
-     * @param array $id
+     * @param string $id
      * @return array ['success' => bool, 'message' => string]
      */
     public function delete($id): array
@@ -141,8 +124,6 @@ class StudentManager {
                 // remove it
                 array_splice($students, $i, 1);
 
-                // try to save
-                // if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
                 if ($this->writeFile($students)) {
                     return [
                         'success' => true,
@@ -157,7 +138,6 @@ class StudentManager {
             }
         }
 
-        // invaid id
         return [
             'success' => false,
             'message' => "Student with ID '{$id}' not found.",
@@ -227,7 +207,6 @@ class StudentManager {
 
         // optional: unique when create
         if (!$isUpdate) {
-            // $students = $this->getAllStudents();
             $students = $existingStudents ?: $this->getAllStudents();
             // unique fields, not sure if name and phone should be unique too
             // so just email for now, array structure ensures easy to add/remove fields
@@ -256,14 +235,8 @@ class StudentManager {
      */
     private function generateId(array $students): int 
     {
-        if (empty($students)) { // no students
-            return 1;
-        }
-
-        // array of all ids
-        $ids = array_column($students, 'id');
-        
-        // max + 1
-        return max($ids) + 1;
+        if (empty($students)) return 1;
+    
+        return max(array_column($students, 'id')) + 1;
     }
 }
