@@ -1,18 +1,31 @@
 <?php
+  session_start();
+
   require 'StudentManager.php';
 
   $id = $_GET['id'] ?? null;
   $studentManager = new StudentManager();
   $student = $studentManager->getStudentById($id);
 
-  if (!$student) {
-      die("Student not found!");
+  if (!$id || !$student) {
+    $_SESSION['flash_message'] = ['success' => false, 'message' => 'Student not found.'];
+    header("Location: index.php");
+    exit;
   }
 
-  if($_SERVER['REQUEST_METHOD'] === 'POST') {
-      $result = $studentManager->update($student['id'], $_POST);
-      // print_r($result);
-      // die();
+  $result = null;
+  $data = $student;
+
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $result = $studentManager->update($id, $_POST);
+    
+    if ($result['success']) {
+        $_SESSION['flash_message'] = $result;
+        header("Location: index.php");
+        exit;
+    } else {
+        $data = $_POST;
+    }
   }
 
 ?>
@@ -73,7 +86,7 @@
         <header class="py-10">
           <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 class="text-3xl font-bold tracking-tight text-white">
-              Student Create
+              Student Edit: <?= $data['name'] ?>
             </h1>
           </div>
         </header>
@@ -81,6 +94,16 @@
 
       <main class="-mt-32">
         <div class="mx-auto max-w-3xl px-4 pb-12 sm:px-6 lg:px-8">
+
+          <?php if ($result): ?>
+            <?php
+              $messageClass = $result['success'] ? 'bg-green-500' : 'bg-red-500';
+            ?>
+            <div class="mb-4 p-4 rounded text-white <?= $messageClass ?>">
+              <?= $result['message'] ?>
+            </div>
+          <?php endif; ?>
+
           <form
             class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
             method="POST"
@@ -107,7 +130,7 @@
                       type="text"
                       name="name"
                       id="name"
-                      value="<?= $student['name'] ?? '' ?>"
+                      value="<?= $data['name'] ?? '' ?>"
                       autocomplete="name"
                       placeholder="John Doe"
                       class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none focus:ring-1 focus:ring-indigo-600"
@@ -126,7 +149,7 @@
                       id="email"
                       name="email"
                       type="email"
-                      value="<?= $student['email'] ?? '' ?>"
+                      value="<?= $data['email'] ?? '' ?>"
                       autocomplete="email"
                       placeholder="john@example.com"
                       class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none focus:ring-1 focus:ring-indigo-600"
@@ -145,7 +168,7 @@
                       type="tel"
                       name="phone"
                       id="phone"
-                      value="<?= $student['phone'] ?? '' ?>"
+                      value="<?= $data['phone'] ?? '' ?>"
                       autocomplete="tel"
                       placeholder="+1 (555) 123-4567"
                       class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none focus:ring-1 focus:ring-indigo-600"
@@ -168,7 +191,7 @@
                       <?php
                         $statusList = ['Active', 'On Leave', 'Graduated', 'Inactive'];
                         foreach($statusList as $status) {
-                            $selected = ($student['status'] ?? '') === $status ? 'selected' : '';
+                            $selected = ($data['status'] ?? '') === $status ? 'selected' : '';
                             echo "<option value=\"$status\" {$selected}>{$status}</option>";
                         }
                       ?>

@@ -1,28 +1,28 @@
 <?php
   session_start();
-
   require 'StudentManager.php';
 
   $result = null;
+
   $data = [
-      'name' => $_POST['name'] ?? '',
-      'email' => $_POST['email'] ?? '',
-      'phone' => $_POST['phone'] ?? '',
-      'status' => $_POST['status'] ?? 'Active'
+    'name' => '',
+    'email' => '',
+    'phone' => '',
+    'status' => 'Active'
   ];
 
-  if($_SERVER['REQUEST_METHOD'] === 'POST') {
-      $studentManager = new StudentManager();
-      $result = $studentManager->create($_POST);
-      // print_r($result);
-      // exit;
-      if ($result['success']) {
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $studentManager = new StudentManager();
+    $result = $studentManager->create($_POST);
+    
+    if ($result['success']) {
         $_SESSION['flash_message'] = $result;
         header("Location: index.php");
         exit;
-      }
+    } else {
+        $data = $_POST;
+    }
   }
-
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +30,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Student | Student.io</title>
+    <title>Create Student | Student.io</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
@@ -109,7 +109,7 @@
                   Student Information
                 </h2>
                 <p class="mt-1 text-sm leading-6 text-gray-600">
-                  Update the student's personal details and enrollment status.
+                  Enter the student's personal details and enrollment status.
                 </p>
               </div>
 

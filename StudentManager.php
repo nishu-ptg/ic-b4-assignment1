@@ -69,6 +69,12 @@ class StudentManager {
      */
     public function update($id, $data): array
     {
+        // validate the data first
+        $validation = $this->validate($data);
+        if (!$validation['success']) {
+            return $validation; // if validation fails, no need to proceed
+        }
+
         // get all students
         $students = $this->getAllStudents();
 
@@ -81,7 +87,7 @@ class StudentManager {
                 if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
                     return [
                         'success' => true,
-                        'message' => 'Student updated successfully.',
+                        'message' => "Student '{$data['name']}' updated successfully.",
                     ];
                 }
             }
@@ -104,6 +110,7 @@ class StudentManager {
         $students = $this->getAllStudents();
         foreach ($students as $i => $student) {
             if ($student['id'] == $id) {    // match found
+                $name = $student['name'];   // save name for message
                 // remove it
                 array_splice($students, $i, 1);
 
@@ -111,7 +118,7 @@ class StudentManager {
                 if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
                     return [
                         'success' => true,
-                        'message' => 'Student deleted successfully.',
+                        'message' => "Student '{$name}' deleted successfully.",
                     ];
                 }
             }
