@@ -158,9 +158,21 @@
                       <td
                         class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                       >
+                        <?php
+                          $status = $student['status'] ?? 'Unknown';
+                          $statusClasses = [
+                              'Active' => 'bg-green-50 text-green-700 ring-green-600/20',
+                              'On Leave' => 'bg-yellow-50 text-yellow-800 ring-yellow-600/20',
+                              'Graduated' => 'bg-blue-50 text-blue-700 ring-blue-600/20',
+                              'Inactive' => 'bg-gray-50 text-gray-700 ring-gray-600/20',
+
+                              'Unknown' => 'bg-black-50 text-black-700 ring-black-600/20',
+                          ];
+                          $currentClass = $statusClasses[$status];
+                        ?>  
                         <span
-                          class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
-                          ><?= $student['status'] ?? '?' ?></span
+                          class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <?= $currentClass ?>"
+                          ><?= $status ?></span
                         >
                       </td>
                       <td

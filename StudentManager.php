@@ -27,7 +27,8 @@ class StudentManager {
 
         // prepare new student data with id and added it to the array
         $students[] = array_merge($data, [
-            'id' => time(),
+            // 'id' => time(),
+            'id' => $this->generateId($students),
         ]);
 
         // try to save back to the file, pretty print will take more space but easier to read
@@ -167,5 +168,23 @@ class StudentManager {
 
         // all good
         return ['success' => true];
+    }
+
+    /**
+     * 
+     * @param array $students
+     * @return int
+     */
+    private function generateId(array $students): int 
+    {
+        if (empty($students)) { // no students
+            return 1;
+        }
+
+        // array of all ids
+        $ids = array_column($students, 'id');
+        
+        // max + 1
+        return max($ids) + 1;
     }
 }
