@@ -1,9 +1,19 @@
 <?php
   require 'StudentManager.php';
 
+  $result = null;
+  $data = [
+      'name' => $_POST['name'] ?? '',
+      'email' => $_POST['email'] ?? '',
+      'phone' => $_POST['phone'] ?? '',
+      'status' => $_POST['status'] ?? 'Active'
+  ];
+
   if($_SERVER['REQUEST_METHOD'] === 'POST') {
       $studentManager = new StudentManager();
       $result = $studentManager->create($_POST);
+      // print_r($result);
+      // exit;
   }
 
 ?>
@@ -72,6 +82,16 @@
 
       <main class="-mt-32">
         <div class="mx-auto max-w-3xl px-4 pb-12 sm:px-6 lg:px-8">
+
+        <?php if ($result): ?>
+          <?php
+            $messageClass = $result['success'] ? 'bg-green-500' : 'bg-red-500';
+          ?>
+          <div class="mb-4 p-4 rounded text-white <?= $messageClass ?>">
+            <?= $result['message'] ?>
+          </div>
+        <?php endif; ?>
+
           <form
             class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
             method="POST"
@@ -98,6 +118,7 @@
                       type="text"
                       name="name"
                       id="name"
+                      value="<?= $data['name'] ?>"
                       autocomplete="name"
                       placeholder="John Doe"
                       class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none focus:ring-1 focus:ring-indigo-600"
@@ -113,9 +134,10 @@
                   >
                   <div class="mt-2">
                     <input
-                      id="email"
                       name="email"
                       type="email"
+                      id="email"
+                      value="<?= $data['email'] ?>"
                       autocomplete="email"
                       placeholder="john@example.com"
                       class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none focus:ring-1 focus:ring-indigo-600"
@@ -134,6 +156,7 @@
                       type="tel"
                       name="phone"
                       id="phone"
+                      value="<?= $data['phone'] ?>"
                       autocomplete="tel"
                       placeholder="+1 (555) 123-4567"
                       class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none focus:ring-1 focus:ring-indigo-600"
@@ -149,14 +172,23 @@
                   >
                   <div class="mt-2">
                     <select
-                      id="status"
                       name="status"
+                      id="status"
                       class="block w-full rounded-md border-0 p-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:max-w-xs sm:text-sm sm:leading-6 outline-none focus:ring-1 focus:ring-indigo-600"
                     >
+                      <!--
                       <option>Active</option>
                       <option>On Leave</option>
                       <option>Graduated</option>
                       <option>Inactive</option>
+                      -->
+                      <?php
+                        $options = ["Active", "On Leave", "Graduated", "Inactive"];
+                        foreach ($options as $option) {
+                            $selected = ($data['status'] === $option) ? 'selected' : '';
+                            echo "<option value=\"$option\" $selected>$option</option>";
+                        }
+                      ?>
                     </select>
                   </div>
                 </div>
