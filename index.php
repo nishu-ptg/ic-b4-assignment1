@@ -5,6 +5,7 @@
 
   $studentManager = new StudentManager();
   $students = $studentManager->getAllStudents();
+  $students = array_reverse($students);
 
   $result = $_SESSION['flash_message'] ?? null;
   unset($_SESSION['flash_message']);

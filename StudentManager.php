@@ -26,10 +26,19 @@ class StudentManager {
         $students = json_decode(file_get_contents('students.json'), true) ?? [];
 
         // prepare new student data with id and added it to the array
-        $students[] = array_merge($data, [
-            // 'id' => time(),
-            'id' => $this->generateId($students),
-        ]);
+        // $students[] = array_merge($data, [
+        //     // 'id' => time(),
+        //     'id' => $this->generateId($students),
+        // ]);
+
+        // explicit mapping with desired order
+        $students[] = [
+            'id'     => $this->generateId($students),
+            'name'   => trim($data['name']),
+            'email'  => trim($data['email']),
+            'phone'  => trim($data['phone']),
+            'status' => trim($data['status']),
+        ];
 
         // try to save back to the file, pretty print will take more space but easier to read
         if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
@@ -71,7 +80,7 @@ class StudentManager {
     public function update($id, $data): array
     {
         // validate the data first
-        $validation = $this->validate($data);
+        $validation = $this->validate($data, true);
         if (!$validation['success']) {
             return $validation; // if validation fails, no need to proceed
         }
@@ -82,7 +91,14 @@ class StudentManager {
         foreach ($students as $i => $student) { 
             if ($student['id'] == $id) {    // id matched
                 // merge it
-                $students[$i] = array_merge($student, $data);
+                // $students[$i] = array_merge($student, $data);
+                $students[$i] = [
+                    'id'     => $student['id'], // keep the same id
+                    'name'   => trim($data['name']),
+                    'email'  => trim($data['email']),
+                    'phone'  => trim($data['phone']),
+                    'status' => trim($data['status']),
+                ];
                 
                 // try to save
                 if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
@@ -136,9 +152,9 @@ class StudentManager {
      * @param array $data
      * @return array ['success' => bool, 'message' => string (optional, if any)]
      */
-    private function validate(array $data): array
+    private function validate(array $data,bool $isUpdate = false): array
     {
-        // Required fields
+        // required fields
         $required = ['name', 'email', 'phone', 'status'];
         foreach ($required as $field) {
             if (empty($data[$field])) { // missing or empty
@@ -149,7 +165,7 @@ class StudentManager {
             }
         }
 
-        // Email validation
+        // email validation
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) { // invalid email format
             return [
                 'success' => false,
@@ -157,13 +173,32 @@ class StudentManager {
             ];
         }
 
-        // Optional: dropdown validation
+        // optional: dropdown validation
         $validStatuses = ["Active", "On Leave", "Graduated", "Inactive"];
         if (!in_array($data['status'], $validStatuses)) { // status not in dropdown
             return [
                 'success' => false,
                 'message' => 'Invalid status value.'
             ];
+        }
+
+        // optional: unique when create
+        if (!$isUpdate) {
+            $students = $this->getAllStudents();
+            // unique fields, not sure if name and phone should be unique too
+            // so just email for now, array structure ensures easy to add/remove fields
+            $uniqueFields = ['email',];
+
+            foreach ($students as $student) {
+                foreach ($uniqueFields as $field) {
+                    if (strtolower($student[$field]) == strtolower($data[$field])) {
+                        return [
+                            'success' => false, 
+                            'message' => ucfirst($field) . " '{$data[$field]}' already exists."
+                        ];
+                    }
+                }
+            }
         }
 
         // all good
