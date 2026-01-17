@@ -1,4 +1,6 @@
 <?php
+  session_start();
+
   require 'StudentManager.php';
 
   $result = null;
@@ -14,6 +16,11 @@
       $result = $studentManager->create($_POST);
       // print_r($result);
       // exit;
+      if ($result['success']) {
+        $_SESSION['flash_message'] = $result;
+        header("Location: index.php");
+        exit;
+      }
   }
 
 ?>

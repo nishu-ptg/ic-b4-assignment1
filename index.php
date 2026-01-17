@@ -1,9 +1,13 @@
 <?php
+  session_start();
+
   require 'StudentManager.php';
 
   $studentManager = new StudentManager();
   $students = $studentManager->getAllStudents();
 
+  $result = $_SESSION['flash_message'] ?? null;
+  unset($_SESSION['flash_message']);
 ?>
 
 <!DOCTYPE html>
@@ -71,6 +75,17 @@
       <main class="-mt-32">
         <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
           <div class="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
+
+            <?php if ($result): ?>
+              <?php
+                $messageClass = $result['success'] ? 'bg-green-500' : 'bg-red-500';
+              ?>
+              <div class="mb-4 p-4 rounded text-white <?= $messageClass ?>">
+                <?= $result['message'] ?>
+              </div>
+              <br>
+            <?php endif; ?>
+
             <div class="sm:flex sm:items-center mb-8">
               <div class="sm:flex-auto">
                 <p class="mt-2 text-sm text-gray-700">
@@ -78,6 +93,7 @@
                   and email address.
                 </p>
               </div>
+
               <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                 <a
                   href="create.php"

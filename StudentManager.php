@@ -34,7 +34,7 @@ class StudentManager {
         if (file_put_contents('students.json', json_encode($students, JSON_PRETTY_PRINT))) {
             return [
                 'success' => true,
-                'message' => 'Student created successfully.',
+                'message' => "Student '{$data['name']}' created successfully.",
             ];
         }
 
